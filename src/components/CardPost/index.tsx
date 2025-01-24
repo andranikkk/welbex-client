@@ -11,7 +11,6 @@ import { useState } from "react"
 import dayjs from "dayjs"
 import EditPost from "../EditPost"
 import { BASE_URL } from "../../constants"
-// import { BASE_URL } from "../../constants"
 
 type Props = {
   id: string
@@ -61,9 +60,16 @@ const PostCard: React.FC<Props> = ({
           <p className="text-sm text-default-400">
             {dayjs(createdAt).format("D MMMM YYYY, HH:mm")}
           </p>
-          {mediaUrl}
         </CardHeader>
-        <CardBody>
+        <CardBody className="flex items-center">
+          {mediaUrl && (
+            <img
+              src={`${BASE_URL}${mediaUrl}`}
+              alt={`${content}`}
+              width={50}
+              className="w-full"
+            />
+          )}
           <p>{content}</p>
         </CardBody>
         <CardHeader className="justify-between items-center bg-transparent">

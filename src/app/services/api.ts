@@ -4,6 +4,7 @@ import type { RootState } from "../store"
 
 const baseQuery = fetchBaseQuery({
   baseUrl: `${BASE_URL}/api`,
+  // baseUrl: `http://localhost:3010/api/`,
   prepareHeaders: (headers, { getState }) => {
     const token =
       (getState() as RootState).userSlice.token || localStorage.getItem("token")

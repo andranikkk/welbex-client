@@ -32,12 +32,16 @@ const AddPost: React.FC<Props> = ({ isOpen, onClose }) => {
 
   const handleCreate = handleSubmit(async data => {
     try {
-      await createPost({
-        content: data.content,
-        mediaUrl: data.mediaUrl,
-      }).unwrap()
-      setValue("Posts", "")
+      const formData = new FormData()
+      formData.append("content", data.content)
 
+      if (data.mediaUrl) {
+        const fileInput = data.mediaUrl[0]
+        formData.append("mediaUrl", fileInput)
+      }
+
+      await createPost(formData).unwrap()
+      setValue("Posts", "")
       onClose()
     } catch (error) {
       if (hasError(error)) {
@@ -72,11 +76,19 @@ const AddPost: React.FC<Props> = ({ isOpen, onClose }) => {
                 <Controller
                   name="mediaUrl"
                   control={control}
-                  defaultValue=""
                   render={({ field }) => (
-                    <Input {...field} label="Media URL" type="text" />
+                    <input
+                      type="file"
+                      onChange={e => {
+                        const files = e.target.files
+                        if (files?.length) {
+                          setValue("mediaUrl", files)
+                        }
+                      }}
+                    />
                   )}
                 />
+
                 {errors.name && <ErrorMessage error={error} />}
 
                 <Button type="submit" color="primary" fullWidth>
