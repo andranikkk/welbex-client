@@ -17,5 +17,5 @@
     "types": ["vite/client", "vitest/globals"]
   },
   "references": [{ "path": "./tsconfig.node.json" }],
-  "exclude": ["node_modules", "dist", "*.d.ts", "**/*.d.ts"]
+  "exclude": ["node_modules", "dist", "vite.config.d.ts", "vite.config.ts"]
 }
