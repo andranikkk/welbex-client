@@ -28,6 +28,7 @@ const AddPost: React.FC<Props> = ({ isOpen, onClose }) => {
     control,
     formState: { errors },
     setValue,
+    reset,
   } = useForm()
 
   const handleCreate = handleSubmit(async data => {
@@ -42,6 +43,9 @@ const AddPost: React.FC<Props> = ({ isOpen, onClose }) => {
 
       await createPost(formData).unwrap()
       setValue("Posts", "")
+      reset({
+        content: "",
+      })
       onClose()
     } catch (error) {
       if (hasError(error)) {

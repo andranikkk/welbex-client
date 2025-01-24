@@ -27,11 +27,11 @@ export const postApi = api.injectEndpoints({
       }),
     }),
 
-    editPost: builder.mutation<Post, Partial<Post>>({
-      query: postData => ({
-        url: `/posts/${postData.id}`,
+    editPost: builder.mutation<Post, FormData>({
+      query: formData => ({
+        url: `/posts/${formData.get("id")}`,
         method: "PUT",
-        body: postData,
+        body: formData,
       }),
       invalidatesTags: ["Posts"],
     }),

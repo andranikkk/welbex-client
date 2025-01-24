@@ -1,6 +1,6 @@
 import type React from "react"
 import { useState } from "react"
-import { useForm } from "react-hook-form"
+import { useForm, Controller } from "react-hook-form"
 import type { Post } from "../../app/types"
 import {
   Button,
@@ -32,8 +32,7 @@ const EditPost: React.FC<Props> = ({
 }) => {
   const [editPost, { isLoading }] = useEditPostMutation()
   const [error, setError] = useState("")
-
-  const { handleSubmit, control } = useForm<Post>({
+  const { handleSubmit, control, setValue } = useForm<Post>({
     mode: "onChange",
     reValidateMode: "onBlur",
     defaultValues: {
@@ -45,12 +44,19 @@ const EditPost: React.FC<Props> = ({
   const onSubmit = handleSubmit(async data => {
     try {
       if (postId) {
-        await editPost({
-          id: postId,
-          content: data.content,
-          mediaUrl: data.mediaUrl,
-        }).unwrap()
+        const formData = new FormData()
+        formData.append("id", postId)
+        formData.append("content", data.content || "")
+        if (data.mediaUrl) {
+          const fileInput = (
+            document.getElementById("mediaUrl") as HTMLInputElement
+          )?.files?.[0]
+          if (fileInput) {
+            formData.append("mediaUrl", fileInput)
+          }
+        }
 
+        await editPost(formData).unwrap()
         onClose()
       }
     } catch (error) {
@@ -74,11 +80,29 @@ const EditPost: React.FC<Props> = ({
                   label="Content"
                   type="text"
                 />
-                <CustomInput
-                  control={control}
+                <Controller
                   name="mediaUrl"
-                  label="Media URL"
-                  type="text"
+                  control={control}
+                  render={({ field }) => (
+                    <div>
+                      <label htmlFor="mediaUrl">Media:</label>
+                      <input
+                        type="file"
+                        id="mediaUrl"
+                        onChange={e => {
+                          const file = e.target.files?.[0]
+                          if (file) {
+                            setValue("mediaUrl", file.name)
+                          }
+                        }}
+                      />
+                      {field.value && (
+                        <div className="mt-2">
+                          <p>Current file: {field.value}</p>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 />
                 <ErrorMessage error={error} />
                 <div className="flex gap-2 justify-end">
