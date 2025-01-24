@@ -10,6 +10,7 @@ import { hasError } from "../../utils/hasError"
 import { useState } from "react"
 import dayjs from "dayjs"
 import EditPost from "../EditPost"
+import { BASE_URL } from "../../constants"
 // import { BASE_URL } from "../../constants"
 
 type Props = {
@@ -68,7 +69,7 @@ const PostCard: React.FC<Props> = ({
         <CardHeader className="justify-between items-center bg-transparent">
           <div className="flex items-center gap-3 cursor-pointer w-full">
             <Image
-              src={`http://localhost:3010${authorImg}`}
+              src={`${BASE_URL}${authorImg}`}
               alt={`${content}`}
               width={50}
               className="rounded-full mr-3"

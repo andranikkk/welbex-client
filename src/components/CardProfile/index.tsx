@@ -2,6 +2,7 @@
 import { useSelector } from "react-redux"
 import { selectCurrent } from "../../features/user/userSlice"
 import { Card, CardBody, CardHeader, Image } from "@nextui-org/react"
+import { BASE_URL } from "../../constants"
 // import { BASE_URL } from "../../constants"
 
 const CardProfile = () => {
@@ -19,7 +20,7 @@ const CardProfile = () => {
         <Image
           alt="Card Profile"
           className="object-cover rounded-xl"
-          src={`http://localhost:3010${imageUrl}`}
+          src={`${BASE_URL}${imageUrl}`}
           width={370}
         />
       </CardHeader>
